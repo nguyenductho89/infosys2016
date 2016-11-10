@@ -1,0 +1,109 @@
+
+0. use employees
+
+1. All info of all employees
+
+* Command
+
+select * from `employees`
+
+*Output
+
+|  59734 | 1952-02-25 | Adas           | Ulupinar         | M      | 1987-12-26 |
+|  59735 | 1958-10-16 | Yakkov         | Ellozy           | F      | 1991-02-01 |
+|  59736 | 1956-07-15 | Udi            | Soicher          | M      | 1986-02-09 |
+|  59737 | 1961-06-13 | Matk           | Jansen           | M      | 1995-08-18 |
+|  59738 | 1958-08-12 | Unal           | Petersohn        | M      | 1995-06-16 |
+|  59739 | 1958-06-08 | Jessie         | Velardi          | F      | 1986-09-14 |
+|  59740 | 1958-08-13 | Zhaofang       | Guerreiro        | M      | 1993-05-31 |
+|  59741 | 1959-12-15 | Alexius        | Schapire         | M      | 1990-02-20 |
+|  59742 | 1958-08-11 | Yakichi        | Chiola           | F      | 1993-10-03 |
+|  59743 | 1954-07-15 | Zhenhua        | Bakhtari         | F      | 1985-12-25 |
+
+
+2. All info of all departments
+
+* Command
+
+select * from `departments`;
+
+* Output
+
++---------+--------------------+
+| dept_no | dept_name          |
++---------+--------------------+
+| d009    | Customer Service   |
+| d005    | Development        |
+| d002    | Finance            |
+| d003    | Human Resources    |
+| d001    | Marketing          |
+| d004    | Production         |
+| d006    | Quality Management |
+| d008    | Research           |
+| d007    | Sales              |
++---------+--------------------+
+9 rows in set (0.02 sec)
+
+3 Full names of all employees
+
+* Command
+
+select concat(first_name, ' ',last_name) from `employees` limit 0,10;
+
+* Output
+
++-----------------------------------+
+| concat(first_name, ' ',last_name) |
++-----------------------------------+
+| Georgi Facello                    |
+| Bezalel Simmel                    |
+| Parto Bamford                     |
+| Chirstian Koblick                 |
+| Kyoichi Maliniak                  |
+| Anneke Preusig                    |
+| Tzvetan Zielinski                 |
+| Saniya Kalloufi                   |
+| Sumant Peac                       |
+| Duangkaew Piveteau                |
++-----------------------------------+
+10 rows in set (0.02 sec)
+
+4 Names of all departments
+
+* Command
+
+select dept_name from `departments`;
+
+* Output
+
++--------------------+
+| dept_name          |
++--------------------+
+| Customer Service   |
+| Development        |
+| Finance            |
+| Human Resources    |
+| Marketing          |
+| Production         |
+| Quality Management |
+| Research           |
+| Sales              |
++--------------------+
+9 rows in set (0.00 sec)
+
+
+5 Full names of employees working in "Sales" department
+
+
+6 Full names of male employees working in "Finance"
+department
+7 Salaries of female employees working in "Marketing"
+department
+8 Full names of employees who have the same last name as
+their manager
+9 Full names of managers who have been doing the job twice
+10 Full names of employees who was paid more than $100000
+11 Names of all departments that have employees paid more
+than $1000000
+
+
