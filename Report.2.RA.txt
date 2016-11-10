@@ -1,1 +1,78 @@
-asdasdasd
+
+1. All info of all employees
+
+*Command
+
+\project_{birth_date,first_name,last_name,gender} employees;
+
+*Output
+
+|  67811 | 1957-09-15 | Christoph      | Stifter          | M      | 1994-04-04 |
+|  67812 | 1954-08-17 | Reinhold       | Reinhart         | M      | 1985-10-13 |
+|  67813 | 1956-08-05 | Volkmar        | Acton            | F      | 1986-10-17 |
+|  67814 | 1955-10-16 | Juichirou      | Bamford          | F      | 1989-03-20 |
+|  67815 | 1952-05-15 | Zongyan        | Coney            | M      | 1987-09-28 |
+|  67816 | 1957-01-27 | Bernd          | Tomescu          | F      | 1989-01-16 |
+|  67817 | 1954-06-24 | Ipke           | Auyong           | M      | 1992-02-10 |
+|  67818 | 1959-04-24 | Tonia          | Madeira          | M      | 1987-03-07 |
+|  67819 | 1958-05-16 | Hairong        | McFarlan         | M      | 1995-01-30 |
+|  67820 | 1952-02-09 | Gay            | Colorni          | F      | 1988-01-27 |
+|  67821 | 1961-06-03 | Hidekazu       | Asser            | M      | 1991-07-11 |
+|  67822 | 1963-07-25 | Ebru           | Rosin            | M      | 1987-03-01 |
+|  67823 | 1952-03-29 | Szabolcs       | Muhlberg         | M      | 1988-02-17 |
+|  67824 | 1962-10-22 | Gunilla        | Luga             | M      | 1992-02-07 |
+|  67825 | 1956-12-31 | Izaskun        | Greibach         | M      | 1992-12-12 |
+|  67826 | 1955-11-26 | Selwyn         | Detkin           | M      | 1987-09-18 |
+|  67827 | 1953-12-22 | Mohamadou      | Itzigehl         | M      | 1995-10-26 |
+
+2. All info of all departments
+
+*Command
+
+\project_{dept_no,dept_name} departments;
+
+*Output
+
++---------+--------------------+
+| dept_no | dept_name          |
++---------+--------------------+
+| d009    | Customer Service   |
+| d005    | Development        |
+| d002    | Finance            |
+| d003    | Human Resources    |
+| d001    | Marketing          |
+| d004    | Production         |
+| d006    | Quality Management |
+| d008    | Research           |
+| d007    | Sales              |
++---------+--------------------+
+
+3. Full names of all employees
+
+*Command
+
+\project_{first_name,last_name} employees;
+
+*Output
+
+
+
+4. Names of all departments
+
+*Command
+
+\project_{dept_name} departments;
+
+*Output
+
+-----
+Customer Service
+Development
+Finance
+Human Resources
+Marketing
+Production
+Quality Management
+Research
+Sales
+-----
