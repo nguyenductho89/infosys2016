@@ -55,7 +55,27 @@
 
 *Output
 
-
+Vitaly|Rotem
+Vitaly|Rothenberg
+Vitaly|Rouquie
+Vitaly|Rusterholz
+Vitaly|Sanella
+Vitaly|Sankaranarayanan
+Vitaly|Schapire
+Vitaly|Schmiedel
+Vitaly|Schmittgen
+Vitaly|Schonegge
+Vitaly|Schusler
+Vitaly|Schwabacher
+Vitaly|Serra
+Vitaly|Servi
+Vitaly|Shackel
+Vitaly|Shigei
+Vitaly|Shihab
+Vitaly|Shobatake
+Vitaly|Shrader
+Vitaly|Shumilov
+Vitaly|Sifakis
 
 4. Names of all departments
 
