@@ -1,0 +1,147 @@
+1. What is the average salary of each employee?
+
+*Command
+
+select AVG(salary)
+
+from salaries
+
+group by emp_no limit 0,5;
+
+*Output
++-------------+
+| AVG(salary) |
++-------------+
+|  75388.9412 |
+|  68854.5000 |
+|  43030.2857 |
+|  56512.2500 |
+|  87275.7692 |
++-------------+
+
+2.How much was each employee paid in total?
+
+*Command
+
+select SUM(salary)
+
+from salaries
+
+group by emp_no limit 0,5;
+
+*Output
+
++-------------+
+| SUM(salary) |
++-------------+
+|     1281612 |
+|      413127 |
+|      301212 |
+|      904196 |
+|     1134585 |
++-------------+
+
+3. Minimum, maximum and total salaries of each department?
+
+*Command
+
+select min(salaries.salary) as min, max(salaries.salary) as max, sum(salaries.salary) as total, departments.dept_name
+
+from `salaries` 
+	join `dept_emp` on salaries.emp_no = dept_emp.emp_no
+	join `departments` on dept_emp.dept_no = departments.dept_no
+Group by dept_emp.dept_no;
+
+*Output
++-------+--------+-------------+--------------------+
+| min   | max    | total       | dept_name          |
++-------+--------+-------------+--------------------+
+| 39127 | 145128 | 13725425266 | Marketing          |
+| 38812 | 142395 | 11650834677 | Finance            |
+| 38735 | 141953 |  9363811425 | Human Resources    |
+| 38623 | 138273 | 41554438942 | Production         |
+| 38849 | 144434 | 48179456393 | Development        |
+| 38786 | 132103 | 10865203635 | Quality Management |
+| 39169 | 158220 | 40030089342 | Sales              |
+| 38851 | 130211 | 11969730427 | Research           |
+| 38836 | 144866 | 13143639841 | Customer Service   |
++-------+--------+-------------+--------------------+
+9 rows in set (27.43 sec)
+
+
+4. Which departments have paid more than 20 billion dollars
+for their employees?
+
+*Command
+
+select sum(salaries.salary) as total, departments.dept_name
+
+from `salaries` 
+	join `dept_emp` on salaries.emp_no = dept_emp.emp_no
+	join `departments` on dept_emp.dept_no = departments.dept_no
+Group by dept_emp.dept_no having total > 20000000000;
+
+*Output
+
++-------------+-------------+
+| total       | dept_name   |
++-------------+-------------+
+| 41554438942 | Production  |
+| 48179456393 | Development |
+| 40030089342 | Sales       |
++-------------+-------------+
+3 rows in set (27.13 sec)
+
+5. Total salaries of male employees in each department?
+
+*Command
+
+select sum(salaries.salary) as total, departments.dept_name
+from `salaries` 
+	join `employees` on salaries.emp_no = employees.emp_no
+	join `dept_emp` on dept_emp.emp_no = employees.emp_no 		
+	join `departments` on dept_emp.dept_no = departments.dept_no
+	where employees.gender = 'M'
+Group by dept_emp.dept_no ;
+
+*Output
+
++-------------+--------------------+
+| total       | dept_name          |
++-------------+--------------------+
+|  8352455367 | Marketing          |
+|  6940675318 | Finance            |
+|  5619533959 | Human Resources    |
+| 24873889749 | Production         |
+| 28961357095 | Development        |
+|  6472073211 | Quality Management |
+| 24051537190 | Sales              |
+|  7174578852 | Research           |
+|  7865587983 | Customer Service   |
++-------------+--------------------+
+9 rows in set (11.21 sec)
+
+
+6. Total salaries of department managers for each department,
+from highest to lowest?
+
+select sum(salaries.salary) as total, dept_manager.emp_no
+from `salaries`
+ join `dept_manager` on salaries.emp_no = dept_manager.emp_no
+Group by dept_manager.dept_no ;
+
+*Output
++---------+--------+
+| total   | emp_no |
++---------+--------+
+| 3093009 | 110022 |
+| 2549372 | 110085 |
+| 2098298 | 110183 |
+| 3374004 | 110303 |
+| 2028376 | 110511 |
+| 4162118 | 110725 |
+| 2915118 | 111035 |
+| 2558661 | 111400 |
+| 3187661 | 111692 |
++---------+--------+
+9 rows in set (0.00 sec)
