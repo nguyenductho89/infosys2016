@@ -1,5 +1,9 @@
 
-0. use employees
+0. Use database
+
+* Command
+
+use employees
 
 1. All info of all employees
 
@@ -94,16 +98,160 @@ select dept_name from `departments`;
 
 5 Full names of employees working in "Sales" department
 
+*Command
+select concat(first_name,' ', last_name) as full_name 
+from `employees` 
+join `dept_emp` 
+	on employees.emp_no=dept_emp.emp_no 
+join `departments` 
+	on dept_emp.dept_no=departments.dept_no 
+where departments.dept_name = 'Sales';
+
+*Output+----------------------+
+| full_name            |
++----------------------+
+| Bezalel Simmel       |
+| Kazuhito Cappelletti |
+| Bader Swan           |
+| Uri Lenart           |
+| Yinghua Dredge       |
+| Sanjiv Zschoche      |
+| Breannda Billingsley |
+| Tse Herber           |
+| Charlene Brattka     |
+| Xinglin Eugenio      |
 
 6 Full names of male employees working in "Finance"
 department
+
+*Command
+
+select concat(first_name,' ', last_name) as full_name 
+from `employees` 
+join `dept_emp` 
+	on employees.emp_no=dept_emp.emp_no 
+join `departments` 
+	on dept_emp.dept_no=departments.dept_no 
+where departments.dept_name = 'Finance' 
+	and employees.gender='M';
+
+*Output
+
+| Nagui Stamatiou              |
+| Bernd Gluchowski             |
+| Phillip Panienski            |
+| Sastry Szmurlo               |
+| Jacopo Hasham                |
+| Moon Pleszkun                |
+| Hercules Porotnikoff         |
+| Shaz Bierbaum                |
+| Masali Chorvat               |
+| Keiichiro Lindqvist          |
+| Patricia Breugel             |
++------------------------------+
+10331 rows in set (0.06 sec)
+
+
 7 Salaries of female employees working in "Marketing"
 department
+
+*Command
+
+select concat(first_name,' ', last_name) as full_name, salaries.salary
+from `employees` 
+join `salaries`
+	on employees.emp_no = salaries.emp_no
+join `dept_emp` 
+	on employees.emp_no=dept_emp.emp_no 
+join `departments` 
+	on dept_emp.dept_no=departments.dept_no 
+where departments.dept_name = 'Marketing' 
+	and employees.gender = 'F';
+*Output
+
+| Siamak Salverda             |  52539 |
+| Siamak Salverda             |  56516 |
+| Siamak Salverda             |  59357 |
+| Siamak Salverda             |  63601 |
+| Siamak Salverda             |  64778 |
+| Siamak Salverda             |  65475 |
+| Siamak Salverda             |  69488 |
+| Siamak Salverda             |  72212 |
+| Siamak Salverda             |  71874 |
+| Siamak Salverda             |  73574 |
+| Siamak Salverda             |  76708 |
+| Siamak Salverda             |  79327 |
+| Siamak Salverda             |  80389 |
++-----------------------------+--------+
+74996 rows in set (1.36 sec)
+
 8 Full names of employees who have the same last name as
 their manager
 9 Full names of managers who have been doing the job twice
 10 Full names of employees who was paid more than $100000
+
+*Command
+
+select concat(first_name,' ', last_name) as full_name, salaries.salary
+from `employees` 
+join `salaries`
+	on employees.emp_no = salaries.emp_no
+where salaries.salary > 100000;
+
+
+*Output
+
+| Gino Usery                  | 108542 |
+| Gino Usery                  | 108364 |
+| Nathan Ranta                | 100856 |
+| Nathan Ranta                | 100455 |
+| Nathan Ranta                | 101242 |
+| Nathan Ranta                | 103545 |
+| Nathan Ranta                | 106681 |
+| Nathan Ranta                | 109800 |
+| Nathan Ranta                | 110282 |
+| Nathan Ranta                | 114010 |
+| Nathan Ranta                | 117502 |
+| Nathan Ranta                | 119297 |
+| Nathan Ranta                | 120013 |
+| Nathan Ranta                | 119906 |
+| Bangqing Kleiser            | 102085 |
++-----------------------------+--------+
+94696 rows in set (2.72 sec)
+
+
 11 Names of all departments that have employees paid more
 than $1000000
+
+*Command
+
+select distinct(departments.dept_name)
+from `employees` 
+join `salaries`
+	on employees.emp_no = salaries.emp_no
+join `dept_emp` 
+	on employees.emp_no=dept_emp.emp_no 
+join `departments` 
+	on dept_emp.dept_no=departments.dept_no 
+where salaries.salary > 100000;
+
+*Output
+
++--------------------+
+| dept_name          |
++--------------------+
+| Customer Service   |
+| Development        |
+| Finance            |
+| Human Resources    |
+| Marketing          |
+| Production         |
+| Quality Management |
+| Research           |
+| Sales              |
++--------------------+
+9 rows in set (0.00 sec)
+
+
 
 
