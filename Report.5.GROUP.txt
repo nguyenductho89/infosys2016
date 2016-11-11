@@ -128,7 +128,8 @@ from highest to lowest?
 select sum(salaries.salary) as total, dept_manager.emp_no
 from `salaries`
  join `dept_manager` on salaries.emp_no = dept_manager.emp_no
-Group by dept_manager.dept_no ;
+Group by dept_manager.dept_no 
+ORDER BY total DESC;
 
 *Output
 +---------+--------+
