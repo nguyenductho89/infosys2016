@@ -106,40 +106,37 @@ lowest.
 
 3.1 Average salary of employees in departments
 
-select avg(salaries.salary), employees.emp_no, dept_emp.dept_no
+create view AVG_EMPLOYEES_SALARY as
+select avg(salaries.salary) as avg_salary, employees.emp_no, dept_emp.dept_no
 from salaries
 join employees on salaries.emp_no = employees.emp_no
 join dept_emp on dept_emp.emp_no = employees.emp_no
 group by employees.emp_no;
 
-3.2 Avarage salary of departments
+3.2 Average salary of departments
 
-select avg(avgEmployees.salary) , avgEmployees.dep_no
-from (select avg(salaries.salary), employees.emp_no, dept_emp.dept_no
-	from salaries
-	join employees on salaries.emp_no = employees.emp_no
-	join dept_emp on dept_emp.emp_no = employees.emp_no
-	group by employees.emp_no
-	) as avgEmployees;
+select avg(avg_salary) as average_salary_departments, dept_no
+from AVG_EMPLOYEES_SALARY
+group by dept_no
+order by average_salary_departments desc;
 
 
 
 *Output
 
-+-------------+
-| avg(salary) |
-+-------------+
-|  71913.2000 |
-|  70489.3649 |
-|  55574.8794 |
-|  59605.4825 |
-|  59478.9012 |
-|  57251.2719 |
-|  80667.6058 |
-|  59665.1817 |
-|  58770.3665 |
-+-------------+
-9 rows in set (28.68 sec)
++----------------------------+---------+
+| average_salary_departments | dept_no |
++----------------------------+---------+
+|             78656.40297622 | d007    |
+|             69541.61771136 | d001    |
+|             68061.43501801 | d002    |
+|             57398.14308868 | d008    |
+|             57253.31382027 | d004    |
+|             57135.48717321 | d005    |
+|             54430.04809248 | d006    |
+|             52418.59837385 | d003    |
+|             52240.88551120 | d009    |
++----------------------------+---------+
 
 select avg(salary) as average_salary
 from salaries

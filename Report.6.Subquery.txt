@@ -115,18 +115,25 @@ and dept_emp.from_date > ( select dept_manager.from_date
 3. Find the average salary of each department, from highest to
 lowest.
 
-3.1 Average salary of employees
+3.1 Average salary of employees in departments
 
-select avg(salaries.salary), employees.emp_no 
+select avg(salaries.salary), employees.emp_no, dept_emp.dept_no
 from salaries
-join employees salaries.emp_no = employees.emp_no
+join employees on salaries.emp_no = employees.emp_no
+join dept_emp on dept_emp.emp_no = employees.emp_no
 group by employees.emp_no;
 
-select avg(salary) as average_salary 
-from salaries
-join dept_emp on salaries.emp_no = dept_emp.emp_no
-group by dept_emp.dept_no
-order by average_salary desc;
+3.2 Avarage salary of departments
+
+select avg(avgEmployees.salary) , avgEmployees.dep_no
+from (select avg(salaries.salary), employees.emp_no, dept_emp.dept_no
+	from salaries
+	join employees on salaries.emp_no = employees.emp_no
+	join dept_emp on dept_emp.emp_no = employees.emp_no
+	group by employees.emp_no
+	) as avgEmployees;
+
+
 
 *Output
 
