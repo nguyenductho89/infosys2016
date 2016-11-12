@@ -1,0 +1,194 @@
+1. Who have the same last name as the managers of the “Finance”
+department?
+
+1.1 create view managers of finance
+
+create view MANAGERS_OF_FINANCE as
+
+select dept_manager.emp_no
+from `dept_manager`
+	join departments on departments.dept_no = dept_manager.dept_no
+
+where departments.dept_name = 'Finance';
+
+
+1.2 Create view last name of managers of finance
+
+create view NAME_MANAGERS_OF_FINANCE as
+
+select employees.last_name
+from employees
+where employees.emp_no in (select emp_no from MANAGERS_OF_FINANCE); 
+
+1.3 Cretate view list employees who have the same last name as the managers of finance
+
+create view LIST_EMPOYEES as
+
+select employees.emp_no, employees.first_name, employees.last_name
+from employees
+where employees.last_name in (select last_name from NAME_MANAGERS_OF_FINANCE);
+
+1.4 Get list employees
+
+select * from LIST_EMPOYEES;
+
+*Output
+
+| 488676 | Kristine      | Alpin      |
+| 489813 | Conrado       | Alpin      |
+| 490322 | Uri           | Legleitner |
+| 493063 | Danil         | Alpin      |
+| 493266 | Constantijn   | Legleitner |
+| 493332 | Anoosh        | Legleitner |
+| 493821 | Aiichiro      | Legleitner |
+| 495608 | Gift          | Legleitner |
+| 496062 | Xinan         | Legleitner |
+| 497267 | Gilbert       | Alpin      |
+| 497479 | Ramalingam    | Alpin      |
+| 497947 | Ekawit        | Alpin      |
+| 497954 | Hilary        | Legleitner |
+| 498115 | Geoffry       | Alpin      |
+| 498634 | Heping        | Alpin      |
+| 499867 | Hidde         | Alpin      |
++--------+---------------+------------+
+408 rows in set (1.31 sec)
+
+2. Who in the “Production” department were hired after the
+promotion of the last manager in that department?
+
+2.1 Create view the date last manager in "Production" promoted
+
+create view DATE_CURRENTLY_MANAGER_PRODUCTION_PROMOTED as
+select dept_manager.from_date
+from dept_manager
+join departments on dept_manager.dept_no = departments.dept_no
+where departments.dept_name = 'Production'
+order by dept_manager.from_date desc
+limit 0,1;
+
+2.2 Create view Employees in "Production" who were hired after the date last manager in "Production" promoted
+
+create view LIST_EMPLOYEES_2
+select employees.first_name,employees.last_name,dept_emp.from_date
+from employees
+join dept_emp on employees.emp_no = dept_emp.emp_no
+join departments on dept_emp.dept_no = departments.dept_no
+where departments.dept_name = 'Production' 
+and dept_emp.from_date > (select from_date from DATE_CURRENTLY_MANAGER_PRODUCTION_PROMOTED) ;
+
+2.3 Get list employees
+
+Select * from LIST_EMPLOYEES_2;
+
+*Output
+
+| Teiji          | Tsukuda          | 1998-04-21 |
+| Dharmaraja     | Range            | 2000-07-02 |
+| Masako         | Heiserman        | 1998-12-10 |
+| Florina        | Cusworth         | 1999-10-17 |
+| Hilary         | Rodiger          | 1999-10-16 |
+| Sergi          | Melton           | 1998-11-01 |
+| Tuval          | Hardjono         | 1999-10-27 |
+| Cordelia       | Paludetto        | 1999-04-09 |
+| Uwe            | Uludag           | 1997-03-05 |
+| Shuichi        | Piazza           | 1996-12-11 |
+| Uri            | Juneja           | 2001-12-09 |
+| DeForest       | Mullainathan     | 1997-04-07 |
+| Dekang         | Lichtner         | 1997-06-02 |
+| Sachin         | Tsukuda          | 1997-11-30 |
++----------------+------------------+------------+
+19513 rows in set (4.02 sec)
+
+
+
+3. Find the average salary of each department, from highest to
+lowest.
+
+3.1 Average salary of employees in departments
+
+select avg(salaries.salary), employees.emp_no, dept_emp.dept_no
+from salaries
+join employees on salaries.emp_no = employees.emp_no
+join dept_emp on dept_emp.emp_no = employees.emp_no
+group by employees.emp_no;
+
+3.2 Avarage salary of departments
+
+select avg(avgEmployees.salary) , avgEmployees.dep_no
+from (select avg(salaries.salary), employees.emp_no, dept_emp.dept_no
+	from salaries
+	join employees on salaries.emp_no = employees.emp_no
+	join dept_emp on dept_emp.emp_no = employees.emp_no
+	group by employees.emp_no
+	) as avgEmployees;
+
+
+
+*Output
+
++-------------+
+| avg(salary) |
++-------------+
+|  71913.2000 |
+|  70489.3649 |
+|  55574.8794 |
+|  59605.4825 |
+|  59478.9012 |
+|  57251.2719 |
+|  80667.6058 |
+|  59665.1817 |
+|  58770.3665 |
++-------------+
+9 rows in set (28.68 sec)
+
+select avg(salary) as average_salary
+from salaries
+join dept_emp on salaries.emp_no = dept_emp.emp_no
+join employees on dept_emp.emp_no = employees.emp_no
+group by dept_emp.dept_no
+order by average_salary desc ;
+
+*Output
++----------------+
+| average_salary |
++----------------+
+|     80667.6058 |
+|     71913.2000 |
+|     70489.3649 |
+|     59665.1817 |
+|     59605.4825 |
+|     59478.9012 |
+|     58770.3665 |
+|     57251.2719 |
+|     55574.8794 |
++----------------+
+9 rows in set (12.55 sec)
+
+
+
+4. Find the average salary of each type of Engineer, from highest to
+lowest.
+
+4.1 Create view
+
+create view AVERAGE_SALARY_ENGINEERS_TYPE as
+
+select avg(salary) as average_salary, titles.title
+from salaries
+join titles on salaries.emp_no = titles.emp_no
+where titles.title like '%engineer%'
+group by titles.title
+order by average_salary desc;
+
+4.2 Get list
+
+select * from AVERAGE_SALARY_ENGINEERS_TYPE ;
+
++----------------+--------------------+
+| average_salary | title              |
++----------------+--------------------+
+|     60543.2191 | Senior Engineer    |
+|     59508.0397 | Engineer           |
+|     59304.9863 | Assistant Engineer |
++----------------+--------------------+
+3 rows in set (9.16 sec)
