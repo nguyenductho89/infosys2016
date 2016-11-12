@@ -5,7 +5,7 @@ department?
 
 select dept_manager.emp_no
 from `dept_manager`
-	join departments on dept_manager.dept_no = dept_manager.dept_no
+	join departments on departments.dept_no = dept_manager.dept_no
 
 where departments.dept_name = 'Finance';
 
@@ -17,7 +17,7 @@ from employees
 where employees.emp_no in 
 			(select dept_manager.emp_no
 				from `dept_manager`
-				join departments on dept_manager.dept_no = dept_manager.dept_no
+				join departments on departments.dept_no = dept_manager.dept_no
 				where departments.dept_name = 'Finance');
 
 1.3 Get list employees who have the same last name as the managers of finance
@@ -29,7 +29,7 @@ where employees.last_name in (select employees.last_name
 				where employees.emp_no in 
 							(select dept_manager.emp_no
 								from `dept_manager`
-								join departments on dept_manager.dept_no = dept_manager.dept_no
+								join departments on departments.dept_no = dept_manager.dept_no
 								where departments.dept_name = 'Finance'
 							)
 				);
@@ -38,27 +38,23 @@ where employees.last_name in (select employees.last_name
 
 *Output
 
-| 498634 | Heping         | Alpin        |
-| 498970 | Shigeaki       | DasSarma     |
-| 499003 | Yinghua        | Markovitch   |
-| 499058 | Mingzeng       | Quadeer      |
-| 499085 | Sanjay         | Sigstam      |
-| 499201 | Abdelkader     | Ghazalie     |
-| 499212 | Gudjon         | Hagimont     |
-| 499231 | Padma          | Hofmeyr      |
-| 499258 | Suvo           | Minakawa     |
-| 499479 | Xiaoshan       | Sigstam      |
-| 499507 | Mong           | Staelin      |
-| 499529 | Parto          | Kambil       |
-| 499563 | Martine        | Markovitch   |
-| 499587 | Zine           | Ghazalie     |
-| 499613 | Vasilis        | Kaelbling    |
-| 499616 | Xiadong        | Hofmeyr      |
-| 499867 | Hidde          | Alpin        |
-| 499891 | Heekeun        | Weedman      |
-+--------+----------------+--------------+
-4403 rows in set (1.50 sec)
-
+| 489813 | Conrado       | Alpin      |
+| 490322 | Uri           | Legleitner |
+| 493063 | Danil         | Alpin      |
+| 493266 | Constantijn   | Legleitner |
+| 493332 | Anoosh        | Legleitner |
+| 493821 | Aiichiro      | Legleitner |
+| 495608 | Gift          | Legleitner |
+| 496062 | Xinan         | Legleitner |
+| 497267 | Gilbert       | Alpin      |
+| 497479 | Ramalingam    | Alpin      |
+| 497947 | Ekawit        | Alpin      |
+| 497954 | Hilary        | Legleitner |
+| 498115 | Geoffry       | Alpin      |
+| 498634 | Heping        | Alpin      |
+| 499867 | Hidde         | Alpin      |
++--------+---------------+------------+
+408 rows in set (1.08 sec)
 
 2. Who in the “Production” department were hired after the
 promotion of the last manager in that department?
@@ -118,6 +114,13 @@ and dept_emp.from_date > ( select dept_manager.from_date
 
 3. Find the average salary of each department, from highest to
 lowest.
+
+3.1 Average salary of employees
+
+select avg(salaries.salary), employees.emp_no 
+from salaries
+join employees salaries.emp_no = employees.emp_no
+group by employees.emp_no;
 
 select avg(salary) as average_salary 
 from salaries
