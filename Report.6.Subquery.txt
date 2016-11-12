@@ -1,0 +1,187 @@
+1. Who have the same last name as the managers of the “Finance”
+department?
+
+1.1 managers of finance
+
+select dept_manager.emp_no
+from `dept_manager`
+	join departments on dept_manager.dept_no = dept_manager.dept_no
+
+where departments.dept_name = 'Finance';
+
+
+1.2 Get last name of managers of finance
+
+select employees.last_name
+from employees
+where employees.emp_no in 
+			(select dept_manager.emp_no
+				from `dept_manager`
+				join departments on dept_manager.dept_no = dept_manager.dept_no
+				where departments.dept_name = 'Finance');
+
+1.3 Get list employees who have the same last name as the managers of finance
+
+select employees.emp_no, employees.first_name, employees.last_name
+from employees
+where employees.last_name in (select employees.last_name
+				from employees
+				where employees.emp_no in 
+							(select dept_manager.emp_no
+								from `dept_manager`
+								join departments on dept_manager.dept_no = dept_manager.dept_no
+								where departments.dept_name = 'Finance'
+							)
+				);
+
+
+
+*Output
+
+| 498634 | Heping         | Alpin        |
+| 498970 | Shigeaki       | DasSarma     |
+| 499003 | Yinghua        | Markovitch   |
+| 499058 | Mingzeng       | Quadeer      |
+| 499085 | Sanjay         | Sigstam      |
+| 499201 | Abdelkader     | Ghazalie     |
+| 499212 | Gudjon         | Hagimont     |
+| 499231 | Padma          | Hofmeyr      |
+| 499258 | Suvo           | Minakawa     |
+| 499479 | Xiaoshan       | Sigstam      |
+| 499507 | Mong           | Staelin      |
+| 499529 | Parto          | Kambil       |
+| 499563 | Martine        | Markovitch   |
+| 499587 | Zine           | Ghazalie     |
+| 499613 | Vasilis        | Kaelbling    |
+| 499616 | Xiadong        | Hofmeyr      |
+| 499867 | Hidde          | Alpin        |
+| 499891 | Heekeun        | Weedman      |
++--------+----------------+--------------+
+4403 rows in set (1.50 sec)
+
+
+2. Who in the “Production” department were hired after the
+promotion of the last manager in that department?
+
+2.1 the last manager in "Production", and the date him promoted
+
+select dept_manager.emp_no,dept_manager.from_date
+from dept_manager
+join departments on dept_manager.dept_no = departments.dept_no
+where departments.dept_name = 'Production'
+order by dept_manager.from_date desc
+limit 0,1;
+
+2.2 the date last manager in "Production" promoted
+
+select dept_manager.from_date
+from dept_manager
+join departments on dept_manager.dept_no = departments.dept_no
+where departments.dept_name = 'Production'
+order by dept_manager.from_date desc
+limit 0,1;
+
+2.2 Employees in "Production" who were hired after the date last manager in "Production" promoted
+
+select employees.first_name,employees.last_name,dept_emp.from_date
+from employees
+join dept_emp on employees.emp_no = dept_emp.emp_no
+join departments on dept_emp.dept_no = departments.dept_no
+where departments.dept_name = 'Production' 
+and dept_emp.from_date > ( select dept_manager.from_date
+				from dept_manager
+				join departments on dept_manager.dept_no = departments.dept_no
+				where departments.dept_name = 'Production'
+				order by dept_manager.from_date desc
+				limit 0,1);
+
+*Output
+
+| Teiji          | Tsukuda          | 1998-04-21 |
+| Dharmaraja     | Range            | 2000-07-02 |
+| Masako         | Heiserman        | 1998-12-10 |
+| Florina        | Cusworth         | 1999-10-17 |
+| Hilary         | Rodiger          | 1999-10-16 |
+| Sergi          | Melton           | 1998-11-01 |
+| Tuval          | Hardjono         | 1999-10-27 |
+| Cordelia       | Paludetto        | 1999-04-09 |
+| Uwe            | Uludag           | 1997-03-05 |
+| Shuichi        | Piazza           | 1996-12-11 |
+| Uri            | Juneja           | 2001-12-09 |
+| DeForest       | Mullainathan     | 1997-04-07 |
+| Dekang         | Lichtner         | 1997-06-02 |
+| Sachin         | Tsukuda          | 1997-11-30 |
++----------------+------------------+------------+
+19513 rows in set (4.02 sec)
+
+
+
+3. Find the average salary of each department, from highest to
+lowest.
+
+select avg(salary) as average_salary 
+from salaries
+join dept_emp on salaries.emp_no = dept_emp.emp_no
+group by dept_emp.dept_no
+order by average_salary desc;
+
+*Output
+
++-------------+
+| avg(salary) |
++-------------+
+|  71913.2000 |
+|  70489.3649 |
+|  55574.8794 |
+|  59605.4825 |
+|  59478.9012 |
+|  57251.2719 |
+|  80667.6058 |
+|  59665.1817 |
+|  58770.3665 |
++-------------+
+9 rows in set (28.68 sec)
+
+select avg(salary) as average_salary
+from salaries
+join dept_emp on salaries.emp_no = dept_emp.emp_no
+join employees on dept_emp.emp_no = employees.emp_no
+group by dept_emp.dept_no
+order by average_salary desc ;
+
+*Output
++----------------+
+| average_salary |
++----------------+
+|     80667.6058 |
+|     71913.2000 |
+|     70489.3649 |
+|     59665.1817 |
+|     59605.4825 |
+|     59478.9012 |
+|     58770.3665 |
+|     57251.2719 |
+|     55574.8794 |
++----------------+
+9 rows in set (12.55 sec)
+
+
+
+4. Find the average salary of each type of Engineer, from highest to
+lowest.
+
+select avg(salary) as average_salary, titles.title
+from salaries
+join titles on salaries.emp_no = titles.emp_no
+where titles.title like '%engineer%'
+group by titles.title
+order by average_salary desc;
+
++----------------+--------------------+
+| average_salary | title              |
++----------------+--------------------+
+|     60543.2191 | Senior Engineer    |
+|     59508.0397 | Engineer           |
+|     59304.9863 | Assistant Engineer |
++----------------+--------------------+
+3 rows in set (9.16 sec)
