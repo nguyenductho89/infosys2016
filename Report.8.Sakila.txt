@@ -1,0 +1,71 @@
+1. List names of all the languages in the database (sorted
+alphabetically)?
+
+select name from language order by name asc;
+
++----------+
+| name     |
++----------+
+| English  |
+| French   |
+| German   |
+| Italian  |
+| Japanese |
+| Mandarin |
++----------+
+
+
+2. List full names of actors with "GER" in their last name,
+ordered by their first name
+
+select concat(first_name, ' ', last_name) AS fullname
+from actor
+where last_name like "%GER%"
+order by first_name;
+
++-------------------+
+| fullname          |
++-------------------+
+| CAMERON ZELLWEGER |
+| JULIA ZELLWEGER   |
+| MICHAEL BOLGER    |
+| MINNIE ZELLWEGER  |
+| VAL BOLGER        |
+| VIVIEN BASINGER   |
++-------------------+
+
+3. Find all the addresses where postal code starts with "57",
+and return addresses sorted.
+
+select address
+from address
+where postal_code like "57%";
+
++-----------------------------------+
+| address                           |
++-----------------------------------+
+| 1697 Kowloon and New Kowloon Loop |
+| 1029 Dzerzinsk Manor              |
+| 1287 Xiangfan Boulevard           |
+| 1309 Weifang Street               |
+| 687 Alessandria Parkway           |
+| 431 Szkesfehrvr Avenue            |
+| 1061 Ede Avenue                   |
+| 231 Kaliningrad Place             |
+| 1515 Korla Way                    |
+| 390 Wroclaw Way                   |
+| 869 Shikarpur Way                 |
++-----------------------------------+
+
+4. How many films involve a "DWARF" in their titles?
+
+select count(film.film_id) as number
+from film
+where title like '%DWARF%';
+
++--------+
+| number |
++--------+
+|      2 |
++--------+
+
