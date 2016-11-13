@@ -113,7 +113,7 @@ Article:
 	magazineId    : Int  
 	title	      : varchar(50) 
 	beginPage     : Int 
-	enndPage      : Int
+	endPage      : Int
 
 Author:
 	authorId      : Int 
@@ -151,7 +151,7 @@ ArticleAuthor:
 |       |   	magazineId    : Int          +---------+
 |       |   	title	      : varchar(50)  |
 |       |   	beginPage     : Int          |
-|       |   	enndPage      : Int          |
+|       |   	endPage      : Int           |
 |       +------------------------------------+
 |                                                              +--------------------------------------+
 |       +---------------------------------+                    |          Author                      |
@@ -167,4 +167,82 @@ ArticleAuthor:
 
 
 6. Implementation
+
+6.1 Create database
+
+CREATE DATABASE magazineDB;
+
+6.2 Create table
+
+CREATE TABLE magazine(
+magazinedId INT NOT NULL AUTO_INCREMENT,
+title       varchar(50), 
+issnNo      varchar(100),  
+volumeNo    Int,
+year        Int,
+orderCount  Int,
+PRIMARY KEY (magazinedId)
+);
+
++-------------+--------------+------+-----+---------+----------------+
+| Field       | Type         | Null | Key | Default | Extra          |
++-------------+--------------+------+-----+---------+----------------+
+| magazinedId | int(11)      | NO   | PRI | NULL    | auto_increment |
+| title       | varchar(50)  | YES  |     | NULL    |                |
+| issnNo      | varchar(100) | YES  |     | NULL    |                |
+| volumeNo    | int(11)      | YES  |     | NULL    |                |
+| year        | int(11)      | YES  |     | NULL    |                |
+| orderCount  | int(11)      | YES  |     | NULL    |                |
++-------------+--------------+------+-----+---------+----------------+
+6 rows in set (0.01 sec)
+
+CREATE TABLE article(
+articleId   int NOT NULL AUTO_INCREMENT,
+magazineId  int, 
+title       varchar(50),  
+beginPage   Int,
+endPage     Int,
+PRIMARY KEY (articleId)
+);
+
++------------+-------------+------+-----+---------+----------------+
+| Field      | Type        | Null | Key | Default | Extra          |
++------------+-------------+------+-----+---------+----------------+
+| articleId  | int(11)     | NO   | PRI | NULL    | auto_increment |
+| magazineId | int(11)     | YES  |     | NULL    |                |
+| title      | varchar(50) | YES  |     | NULL    |                |
+| beginPage  | int(11)     | YES  |     | NULL    |                |
+| endPage    | int(11)     | YES  |     | NULL    |                |
++------------+-------------+------+-----+---------+----------------+
+
+CREATE TABLE author(
+authorId    int NOT NULL AUTO_INCREMENT,
+name        varchar(50),  
+email       varchar(50),
+description varchar(200),
+PRIMARY KEY (authorId)
+);
+
++-------------+--------------+------+-----+---------+----------------+
+| Field       | Type         | Null | Key | Default | Extra          |
++-------------+--------------+------+-----+---------+----------------+
+| authorId    | int(11)      | NO   | PRI | NULL    | auto_increment |
+| name        | varchar(50)  | YES  |     | NULL    |                |
+| email       | varchar(50)  | YES  |     | NULL    |                |
+| description | varchar(200) | YES  |     | NULL    |                |
++-------------+--------------+------+-----+---------+----------------+
+
+CREATE TABLE articleAuthor(
+articleId   int,
+authorId    int,
+FOREIGN KEY (articleId) REFERENCES article(articleId),
+FOREIGN KEY (authorId)  REFERENCES author(authorId)
+);
+
++-----------+---------+------+-----+---------+-------+
+| Field     | Type    | Null | Key | Default | Extra |
++-----------+---------+------+-----+---------+-------+
+| articleId | int(11) | YES  | MUL | NULL    |       |
+| authorId  | int(11) | YES  | MUL | NULL    |       |
++-----------+---------+------+-----+---------+-------+
 
