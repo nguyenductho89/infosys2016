@@ -1,0 +1,52 @@
+1. Which normal form does the employee database satisfy? Why?
+
+1NF( Use primary keys and foreign keys)
+
+
+2NF(1NF + Each non-key column depends on the primary keys)
+
+
+3NF(2NF + Only columns that are non-transitively dependent on the
+primary key)
+
+
+
+2. Produde a 3NF of the following Order form document by
+normalization (next page)
+
+
+ 
++-----------------------------+
+|           product           | 
+------------------------------+
+|   productId                 | 
+|   description               |
+|   price                     | 
++-----------------------------+
+
++-----------------------------+
+|           order             | 
++-----------------------------+
+|   orderId                   |
+|   order_number              |
+|   order_date                |
+|   customerId                |
+|   productId                 |
+|   quantity                  | 
++-----------------------------+
+
++-----------------------------+
+|           customer          | 
++-----------------------------+
+|  customerId                 |
+|  customer_name              |
+|  customer_phone             |
+|  customer_address           |
++-----------------------------+
+
++-----------------------------+
+|           addressCity       | 
++-----------------------------+
+|   customer_address          | 
+|   city                      |     
++-----------------------------+
