@@ -1,5 +1,7 @@
 A Non-Government Organization (NGO) wants to prepare a database for
-all its projects. 
+all its projects.
+
+ 
 It has diverse head offices in several countries which take
 manage and coordinate the projects of that country.
 
@@ -21,13 +23,291 @@ Also there is wished the investment of the project that corresponds to the city 
 
 1. Determine concepts that needs to be stored
 
-
-
-
+Project
+ProjectList
+HeadOffice
+Action
+ActionList
+Employees
+City
+Country
 
 
 2. Determine attributes of each concept
+
+HeadOffice    :  phoneNo, directorName, city, country, director
+Project       :  code, title, beginDate, endDate, bugget, person in charge
+ProjectList   :  project
+Employees     :  employeeName, position     
+Action        :  actionName, actionDescription
+ActionList    :  actionList
+City	      :  address, cityName, inhabitantNo
+Country	      :  countryName
+
+
 3. Determine links (relationships) between them
+
+ProjectList and Project  : (1-n)
+Project and Employees    : (n-n)
+Project and Action       : (1-n)
+Country and City         : (1-n)
+
 4. Determine types of each concept attribute
 5. Solve foreign key links
+
+5.1 Add primary key 
+
+5.2 add foreign key for 1-n
+
+HeadOffice    : 
+		officeId           : int
+		cityId	           : int 
+		phoneNo            : varchar(50)
+		directorId         : int
+		projectListId      : int
+ProjectList   :
+		projectListId      : int
+		projectId          : int
+
+Project       : 
+		projectId	   : int 
+		code               : varchar(50) 
+		title              : varchar(100)  
+		beginDate          : date
+		endDate            : date 
+		bugget             : float 
+		picId              : int
+		actionListId       : int
+
+Employees     : 
+		employeeId         : int 
+		officeId           : int
+		employeeName       : varchar(50)
+ 		position           : int
+ 
+ActionList    :
+		actionListId       : int
+		actionId           : int              
+Action        : 
+		actionId           : int 
+		actionName         : varchar(100) 
+		actionDescription  : varchar(200)
+
+City	      : 
+		cityId             : int 
+		countryId          : int 
+		address            : varchar(100) 
+		cityName           : varchar(50) 
+		inhabitantNo       : int
+
+Country	      : 
+		countryId     : int 
+	      	countryName   : varchar(50)
+
+5.3 add tables for n-n
+
+
+ProjectEmployees:
+
+	projectId      : Int 
+	employeeId     : Int
+
+
+5.4 Final schema
+
+       +---------------------------------------------------+      +---------------------------------------------------+ +----------------------------+
+      |   HeadOffice                                       |      |                City                               | |           Country          |
+      +----------------------------------------------------+      +---------------------------------------------------+ +----------------------------+
+      | 		officeId           : int           |      |    		cityId             : int              +-+ countryId     : int        |
++-----+ 		cityId	           : int           +------+    		countryId          : int              | | countryName   : varchar(50)|
+|     | 		phoneNo            : varchar(50)   |      |    		address            : ^archar(100)     | |                            |
+|     | 		directorId         : int           |      |    		cityName           : varchar(50)      | +----------------------------+
+|     | 		projectListId      : int           |      |    		inhabitantNo       : int              |
+|     +----------------------------------------------------+      +---------------------------------------------------+
+|     +--------------------------------------------------+
+|     |          ProjectList                             |
+|     +--------------------------------------------------+
++-----+   projectListId      : int                       |
+ 1 +--+   		projectId          : int         |
+   |  +--------------------------------------------------+
+   |  +--------------------------------------------------+      +----------------------------------------+
+   |  |           Project                                +------+       ActionList                       |
+   |  +--------------------------------------------------+      +----------------------------------------+ 1
+ * +--+   		projectId	   : int         |      |		actionListId       : int +----------------+
+      |   		code               : ^archar(50) |      |		actionId           : int |                |
+      |   		title              : varchar(100)|      +----------------------------------------+                |
+      |   		beginDate          : date        |      +-------------------------------------------------+       |
+      |   		endDate            : date        |      |           Action                                |       |
+      |   		bugget             : float       |      +-------------------------------------------------+       |
+      |   		picId              : int         |      |  		actionId           : int          +-------+
+      |   		actionListId       : int         |      |  		actionName         : ^archar(100) |*
+      +--------------------------------------------------+      |  		actionDescription  : varchar(200) |
+                                                                +-------------------------------------------------+
+
 6. Implementation
+
+6.1 Create database
+
+CREATE DATABASE ngo;
+
+6.2 Create table
+
+CREATE TABLE headOffice(
+officeId    INT NOT NULL AUTO_INCREMENT,
+cityId      int, 
+phoneNo     varchar(15),  
+directorId  Int,
+projectListId  Int,
+PRIMARY KEY (officeId)
+);
+
+
++---------------+-------------+------+-----+---------+----------------+
+| Field         | Type        | Null | Key | Default | Extra          |
++---------------+-------------+------+-----+---------+----------------+
+| officeId      | int(11)     | NO   | PRI | NULL    | auto_increment |
+| cityId        | int(11)     | YES  |     | NULL    |                |
+| phoneNo       | varchar(15) | YES  |     | NULL    |                |
+| directorId    | int(11)     | YES  |     | NULL    |                |
+| projectListId | int(11)     | YES  |     | NULL    |                |
++---------------+-------------+------+-----+---------+----------------+
+
+
+CREATE TABLE projectList(
+projectListId   int NOT NULL AUTO_INCREMENT,
+projectId  int, 
+PRIMARY KEY (projectListId)
+);
+
++---------------+---------+------+-----+---------+----------------+
+| Field         | Type    | Null | Key | Default | Extra          |
++---------------+---------+------+-----+---------+----------------+
+| projectListId | int(11) | NO   | PRI | NULL    | auto_increment |
+| projectId     | int(11) | YES  |     | NULL    |                |
++---------------+---------+------+-----+---------+----------------+
+
+CREATE TABLE project(
+projectId    int NOT NULL AUTO_INCREMENT,
+		code               varchar(50) ,
+		title              varchar(100),  
+		beginDate          date,
+		endDate            date, 
+		bugget             float, 
+		picId              int,
+		actionListId       int,
+PRIMARY KEY (projectId)
+);
+
++--------------+--------------+------+-----+---------+----------------+
+| Field        | Type         | Null | Key | Default | Extra          |
++--------------+--------------+------+-----+---------+----------------+
+| projectId    | int(11)      | NO   | PRI | NULL    | auto_increment |
+| code         | varchar(50)  | YES  |     | NULL    |                |
+| title        | varchar(100) | YES  |     | NULL    |                |
+| beginDate    | date         | YES  |     | NULL    |                |
+| endDate      | date         | YES  |     | NULL    |                |
+| bugget       | float        | YES  |     | NULL    |                |
+| picId        | int(11)      | YES  |     | NULL    |                |
+| actionListId | int(11)      | YES  |     | NULL    |                |
++--------------+--------------+------+-----+---------+----------------+
+
+
+CREATE TABLE employee(
+employeeId     int NOT NULL AUTO_INCREMENT,
+		officeId            int,
+		employeeName        varchar(50),
+ 		position            int,
+PRIMARY KEY (employeeId)
+);
+
++--------------+-------------+------+-----+---------+----------------+
+| Field        | Type        | Null | Key | Default | Extra          |
++--------------+-------------+------+-----+---------+----------------+
+| employeeId   | int(11)     | NO   | PRI | NULL    | auto_increment |
+| officeId     | int(11)     | YES  |     | NULL    |                |
+| employeeName | varchar(50) | YES  |     | NULL    |                |
+| position     | int(11)     | YES  |     | NULL    |                |
++--------------+-------------+------+-----+---------+----------------+
+
+
+CREATE TABLE actionList(
+actionListId     int NOT NULL AUTO_INCREMENT,
+		actionId    int, 
+PRIMARY KEY (actionListId)
+);
+
++--------------+---------+------+-----+---------+----------------+
+| Field        | Type    | Null | Key | Default | Extra          |
++--------------+---------+------+-----+---------+----------------+
+| actionListId | int(11) | NO   | PRI | NULL    | auto_increment |
+| actionId     | int(11) | YES  |     | NULL    |                |
++--------------+---------+------+-----+---------+----------------+
+
+
+CREATE TABLE action(
+actionId     int NOT NULL AUTO_INCREMENT,
+		actionName         varchar(100), 
+		actionDescription  varchar(200),
+PRIMARY KEY (actionId)
+);
+
+
++-------------------+--------------+------+-----+---------+----------------+
+| Field             | Type         | Null | Key | Default | Extra          |
++-------------------+--------------+------+-----+---------+----------------+
+| actionId          | int(11)      | NO   | PRI | NULL    | auto_increment |
+| actionName        | varchar(100) | YES  |     | NULL    |                |
+| actionDescription | varchar(200) | YES  |     | NULL    |                |
++-------------------+--------------+------+-----+---------+----------------+
+
+
+CREATE TABLE city(
+cityId     int NOT NULL AUTO_INCREMENT,
+		countryId           int, 
+		address             varchar(100), 
+		cityName            varchar(50), 
+		inhabitantNo        int,
+PRIMARY KEY (cityId)
+);
+
++--------------+--------------+------+-----+---------+----------------+
+| Field        | Type         | Null | Key | Default | Extra          |
++--------------+--------------+------+-----+---------+----------------+
+| cityId       | int(11)      | NO   | PRI | NULL    | auto_increment |
+| countryId    | int(11)      | YES  |     | NULL    |                |
+| address      | varchar(100) | YES  |     | NULL    |                |
+| cityName     | varchar(50)  | YES  |     | NULL    |                |
+| inhabitantNo | int(11)      | YES  |     | NULL    |                |
++--------------+--------------+------+-----+---------+----------------+
+
+
+
+CREATE TABLE country(
+countryId     int NOT NULL AUTO_INCREMENT,
+		countryName            varchar(50), 
+PRIMARY KEY (countryId)
+);
+
++-------------+-------------+------+-----+---------+----------------+
+| Field       | Type        | Null | Key | Default | Extra          |
++-------------+-------------+------+-----+---------+----------------+
+| countryId   | int(11)     | NO   | PRI | NULL    | auto_increment |
+| countryName | varchar(50) | YES  |     | NULL    |                |
++-------------+-------------+------+-----+---------+----------------+
+
+
+
+CREATE TABLE projectEmployee(
+projectId   int,
+employeeId   int,
+FOREIGN KEY (projectId) REFERENCES project(projectId),
+FOREIGN KEY (employeeId)  REFERENCES employee(employeeId)
+);
+
++------------+---------+------+-----+---------+-------+
+| Field      | Type    | Null | Key | Default | Extra |
++------------+---------+------+-----+---------+-------+
+| projectId  | int(11) | YES  | MUL | NULL    |       |
+| employeeId | int(11) | YES  | MUL | NULL    |       |
++------------+---------+------+-----+---------+-------+
+
