@@ -1,18 +1,30 @@
 
+1 Create new departments (Research and Development, Marketing and
+Sales).
+2 Change all relevant employees to new departments by update the dept no
+fields of 2 tables dept manager and dept emp from the old departments
+to new departments.
+3 Delete all the old departments.
+
 
 insert into `departments` values
 ( 'd010' , 'Research and Development'),
 ( 'd011' , 'Marketing and Sales' );
 
-
-
-1. Development (d005) and Research (d008) ? Research and
-Development(d010)
-
-update `dept_manager` set
+update dept_manager set
 dept_no = 'd010'
 where dept_no = 'd005' or dept_no = 'd008' ;
 
-2. Marketing (d001) and Sales (d007) ? Marketing and Sales
-(d011)
+update ignore dept_emp 
+set dept_no = 'd010'
+where dept_no = 'd005' or dept_no = 'd008' ;
 
+update ignore dept_emp
+set dept_no = 'd011'
+where dept_no = 'd001' or dept_no = 'd007' ;
+
+delete from departments where
+dept_no = 'd005' or
+dept_no = 'd008' or
+dept_no = 'd001' or
+dept_no = 'd007' ;
