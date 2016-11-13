@@ -18,10 +18,19 @@ normalization (next page)
  
 +-----------------------------+
 |           product           | 
-------------------------------+
++-----------------------------+
 |   productId                 | 
 |   description               |
 |   price                     | 
++-----------------------------+
+
++-----------------------------+
+|           productList       | 
+------------------------------+
+|   productListId             |
+|   productId                 | 
+|   quantity                  |
+|                             | 
 +-----------------------------+
 
 +-----------------------------+
@@ -31,8 +40,8 @@ normalization (next page)
 |   order_number              |
 |   order_date                |
 |   customerId                |
-|   productId                 |
-|   quantity                  | 
+|   productListId             |
+|                             | 
 +-----------------------------+
 
 +-----------------------------+
