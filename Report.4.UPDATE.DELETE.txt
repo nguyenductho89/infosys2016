@@ -15,3 +15,4 @@ where dept_no = 'd005' or dept_no = 'd008' ;
 
 2. Marketing (d001) and Sales (d007) ? Marketing and Sales
 (d011)
+

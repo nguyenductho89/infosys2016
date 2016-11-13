@@ -1,0 +1,170 @@
+You need a database to manage information about the magazines that you
+buy habitually.
+
+For each magazine, its title, the ISSN (code that identifies the publication),
+number and year are stored.You need also data about the articles, including
+its title, page of beginning and page of ending. It is assumed that there are
+no two articles with the same title.
+
+Every article can be written by several authors, whose name, e-mail address
+and ascription are stored, 
+
+Besides, a number that indicates the order of magazines has
+to be stored
+
+1. Determine concepts that needs to be stored
+
+Magazine
+Article
+Author
+
+2. Determine attributes of each concept
+
+Magazine: title, ISSN,  volume number, year, order count
+Article: title, page of begining, page of ending
+Author: name, email, description
+
+3. Determine links (relationships) between them
+
+Magazine and Article (1-n)
+
+Article and Author   (n-n)
+
+
+
+4. Determine types of each concept attribute
+
+Magazine: 
+	title         : varchar(50) 
+	issnNo        : varchar(100)  
+	volumeNo      : Int
+	year          : Int
+	orderCount    : Int
+
+Article: 
+	title	      : varchar(50) 
+	beginPage     : Int 
+	enndPage      : Int
+
+Author: 
+	name          : varchar(50)
+	email         : varchar(50) 
+	description   : varchar(200)
+
+5. Solve foreign key links
+
+5.1 Add primary key 
+
+Magazine:
+	magazineId    : Int 
+	title         : varchar(50) 
+	issnNo        : varchar(100)  
+	volumeNo      : Int
+	year          : Int
+	orderCount    : Int
+
+Article:
+	articleId     : Int 
+	title	      : varchar(50) 
+	beginPage     : Int 
+	enndPage      : Int
+
+Author:
+	authorId      : Int 
+	name          : varchar(50)
+	email         : varchar(50) 
+	description   : varchar(200)
+
+5.2 add foreign key for 1-n
+
+Magazine:
+	magazineId    : Int 
+	title         : varchar(50) 
+	issnNo        : varchar(100)  
+	volumeNo      : Int
+	year          : Int
+	orderCount    : Int
+
+Article:
+	articleId     : Int
+	magazineId    : Int   // add magazineId to article
+	title	      : varchar(50) 
+	beginPage     : Int 
+	enndPage      : Int
+
+Author:
+	authorId      : Int 
+	name          : varchar(50)
+	email         : varchar(50) 
+	description   : varchar(200)
+
+5.3 add tables for n-n
+
+Magazine:
+	magazineId    : Int 
+	title         : varchar(50) 
+	issnNo        : varchar(100)  
+	volumeNo      : Int
+	year          : Int
+	orderCount    : Int
+
+Article:
+	articleId     : Int
+	magazineId    : Int  
+	title	      : varchar(50) 
+	beginPage     : Int 
+	enndPage      : Int
+
+Author:
+	authorId      : Int 
+	name          : varchar(50)
+	email         : varchar(50) 
+	description   : varchar(200)
+
+// Add ArticleAuthor table
+
+ArticleAuthor:
+
+	authorId      : Int 
+	articleId     : Int
+
+
+5.4 Final schema
+
+        +-------------------------------------+
+        |           Magazine                  |
+        +-------------------------------------+
+        |                                     | 1
+        |  	magazineId    : Int           +---------+
+        |  	title         : varchar(50)   |         |
+        |  	issnNo        : varchar(100)  |         |
+        |  	volumeNo      : Int           |         |
+        |  	year          : Int           |         |
+        |  	orderCount    : Int           |         |
+        +-------------------------------------+         |
+                                                        |
+                                                        |
+        +------------------------------------+          |
+        |            Article                 |          |
+     1  +------------------------------------+          |
++-------+   	articleId     : Int          | *        |
+|       |   	magazineId    : Int          +---------+
+|       |   	title	      : varchar(50)  |
+|       |   	beginPage     : Int          |
+|       |   	enndPage      : Int          |
+|       +------------------------------------+
+|                                                              +--------------------------------------+
+|       +---------------------------------+                    |          Author                      |
+|       |            ArticleAuthor        |                    +--------------------------------------+
+|       +---------------------------------+                  1 |                                      |
+|       |                                 | *             +----+  	authorId      : Int           |
+|    *  |  	authorId      : Int       +---------------+    |  	name          : varchar(50)   |
++-------+  	articleId     : Int       |                    |  	email         : varchar(50)   |
+        |                                 |                    |  	description   : varchar(200)  |
+        +---------------------------------+                    +--------------------------------------+
+
+
+
+
+6. Implementation
+

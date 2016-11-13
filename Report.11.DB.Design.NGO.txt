@@ -1,0 +1,33 @@
+A Non-Government Organization (NGO) wants to prepare a database for
+all its projects. 
+It has diverse head offices in several countries which take
+manage and coordinate the projects of that country.
+
+On head offices, an identifier, the city and country where it is located, its
+address, a phone number and the name of the director are stored. 
+
+Every head office manages a set of projects, with a code, a title, dates of beginning
+and end, the assigned budget and the name of the person in charge. 
+
+One project is formed by a set of actions that can affect to several cities.
+
+We want to know what actions are realised in each city, storing its name,
+country and no of inhabitants. 
+
+We also need an identifier to differentiate them. 
+
+Also there is wished the investment of the project that corresponds to the city and a small description of the action.
+
+
+1. Determine concepts that needs to be stored
+
+
+
+
+
+
+2. Determine attributes of each concept
+3. Determine links (relationships) between them
+4. Determine types of each concept attribute
+5. Solve foreign key links
+6. Implementation
